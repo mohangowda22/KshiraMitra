@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Kshira Mitra</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="open_drawer">OPEN DRAWER</string>
+    <string name="close_drawer">CLOSE DRAWER</string>
+    <string name="home">HOME</string>
+    <string name="milk_rate">CURRENT MILK RATE</string>
+    <string name="login">LOGIN</string>
+    <string name="title_activity_daily_logs">DailyLogs</string>
+    <string name="aboutus">About Kshira Mitra</string>
+    <string name="aboutustxt">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</string>
+    <string name="username">Farmer ID</string>
+    <string name="password">Password</string>
+</resources>
