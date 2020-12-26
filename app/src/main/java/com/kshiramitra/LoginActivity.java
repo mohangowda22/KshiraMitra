@@ -1,8 +1,15 @@
 package com.kshiramitra;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     private RequestQueue requestQueue;
     private ProgressBar progressBar;
     private EditText uname, pass;
+    private static final int MY_PERMISSIONS_REQUEST_CODE = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +57,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                checkPermission();
+            }
             if (!data.equals("{}")) {
                 refresh();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("ERROR", "ERROR" + e.toString());
         }
-
     }
 
     public void refresh() {
@@ -153,6 +163,72 @@ public class LoginActivity extends AppCompatActivity {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    protected void checkPermission() {
+        if (ContextCompat.checkSelfPermission(
+                LoginActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Do something, when permissions not granted
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    LoginActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                // If we should give explanation of requested permissions
+
+                // Show an alert dialog here with request explanation
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                builder.setMessage("Camera, Read Contacts and Write External" +
+                        " Storage permissions are required to do the task.");
+                builder.setTitle("Please grant those permissions");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ActivityCompat.requestPermissions(
+                                LoginActivity.this,
+                                new String[]{
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                },
+                                MY_PERMISSIONS_REQUEST_CODE
+                        );
+                    }
+                });
+                builder.setNeutralButton("Cancel", null);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            } else {
+                // Directly request for required permissions, without explanation
+                ActivityCompat.requestPermissions(
+                        LoginActivity.this,
+                        new String[]{
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        },
+                        MY_PERMISSIONS_REQUEST_CODE
+                );
+            }
+        } else {
+            // Do something, when permissions are already granted
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CODE: {
+                // When request is cancelled, the results array are empty
+                if (
+                        (grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                ) {
+                    // Permissions are granted
+                    Toast.makeText(getApplicationContext(), "Permissions granted.", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Permissions are denied
+                    Toast.makeText(getApplicationContext(), "Permissions denied.", Toast.LENGTH_SHORT).show();
+                }
+            }
+            break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + requestCode);
         }
     }
 }

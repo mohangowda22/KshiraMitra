@@ -25,6 +25,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.TimeUnit;
+
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class ReportActivity extends AppCompatActivity {
     DownloadManager downloadManager;
@@ -68,18 +71,19 @@ public class ReportActivity extends AppCompatActivity {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
+            File path = Environment.getExternalStoragePublicDirectory(
+                    DIRECTORY_DOWNLOADS);
             if (flag == 1) {
-                apkStorage = new File(Environment.getExternalStorageDirectory().toString() + "/KshiraMitra/All");
+                apkStorage = new File(path + "/KshiraMitra/All");
             } else {
-                apkStorage = new File(Environment.getExternalStorageDirectory().toString() + "/KshiraMitra/Pending");
+                apkStorage = new File(path + "/KshiraMitra/Pending");
             }
             if (!apkStorage.exists()) {
-                apkStorage.mkdir();
+                apkStorage.mkdirs();
                 Log.e("INFO", "Directory Created" + apkStorage.toString());
             }
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd HH_mm");
-            LocalDateTime now = LocalDateTime.now();
-            final String downloadFileName = "report_" + dtf.format(now) + ".pdf";
+            String timeStamp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+            final String downloadFileName = "report_" + timeStamp + ".pdf";
             File outputFile = new File(apkStorage, downloadFileName);
             if (!outputFile.exists()) {
                 outputFile.createNewFile();
