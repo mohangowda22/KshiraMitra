@@ -58,15 +58,19 @@
                 android:layout_height="5dp"
                 android:background="?android:attr/listDivider" />
 
-            <TextView
+            <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/aboutustxt"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/aboutustxt"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </android.support.v4.widget.NestedScrollView>
 
             <View
                 android:layout_width="match_parent"
@@ -78,7 +82,7 @@
     <FrameLayout
         android:layout_width="250dp"
         android:layout_height="match_parent"
-        android:layout_gravity="left"
+        android:layout_gravity="start"
         android:background="@android:color/white">
 
         <com.mindorks.placeholderview.PlaceHolderView

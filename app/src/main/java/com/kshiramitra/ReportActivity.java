@@ -88,7 +88,6 @@ public class ReportActivity extends AppCompatActivity {
             if (!outputFile.exists()) {
                 outputFile.createNewFile();
                 Log.e("INFO", "File Created");
-                Toast.makeText(this, "File saved in" + Environment.getExternalStorageDirectory().toString() + "/KshiraMitra/", Toast.LENGTH_LONG).show();
                 FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
 
                 InputStream is = connection.getInputStream();
