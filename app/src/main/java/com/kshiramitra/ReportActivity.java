@@ -1,6 +1,8 @@
 package com.kshiramitra;
 
+import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,8 +25,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
@@ -67,6 +67,7 @@ public class ReportActivity extends AppCompatActivity {
     public void downloadFile(String downloadURL, int flag) {
         try {
             URL url = new URL(downloadURL);
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             File apkStorage;
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -88,6 +89,17 @@ public class ReportActivity extends AppCompatActivity {
             if (!outputFile.exists()) {
                 outputFile.createNewFile();
                 Log.e("INFO", "File Created");
+                alertDialog.setTitle("INFO");
+                alertDialog.setMessage("The File has been saved in"+ apkStorage.toString());
+                alertDialog.setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                                Log.d("INFO","Ok...");
+                            }
+                        });
+                alertDialog.create();
+                alertDialog.show();
                 FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
 
                 InputStream is = connection.getInputStream();

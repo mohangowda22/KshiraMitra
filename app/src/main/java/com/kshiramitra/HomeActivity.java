@@ -1,6 +1,8 @@
 package com.kshiramitra;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -95,6 +97,29 @@ public class HomeActivity extends AppCompatActivity {
         });
         TextView htitle = findViewById(R.id.headerTitle);
         htitle.setText("Home");
+    }
+
+    @Override
+    public void onBackPressed() {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage("Do you want exit ?");
+        alertDialog.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        Log.d("INFO","Ok...");
+                    }
+                });
+        alertDialog.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        alertDialog.create();
+        alertDialog.show();
     }
 
     public void getLogs() {
